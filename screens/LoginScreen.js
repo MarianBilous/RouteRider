@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import HomeScreen from '../screens/HomeScreen';
 import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
+import { useAuth } from "../authContext";
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const { login } = useAuth();
 
     const handleLogin = () => {
-        navigation.navigate('Home', {
-            screen: 'HomeScreen'
-        });
+        login();
     };
 
     return (

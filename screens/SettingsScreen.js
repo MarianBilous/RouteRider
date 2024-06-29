@@ -1,16 +1,14 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
+import { useAuth } from "../authContext";
 
 const SettingsScreen = ({ navigation }) => {
-    const handleLogout = () => {
-        // Логіка для виходу з облікового запису
-        navigation.navigate('Login');
-    };
+    const { logout } = useAuth();
 
     return (
         <View style={styles.container}>
             <Text>Налаштування</Text>
-            <Button title="Вийти" onPress={handleLogout} />
+            <Button title="Вийти" onPress={logout} />
         </View>
     );
 };

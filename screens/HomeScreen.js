@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, FlatList, Button} from 'react-native';
 import { getParcels } from '../api';
-import MapView, { Marker } from 'react-native-maps';
+// import MapView, { Marker } from 'react-native-maps';
 
 const HomeScreen = ({ navigation }) => {
     const [parcels, setParcels] = useState([]);
@@ -18,7 +18,7 @@ const HomeScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <MapView
+            {/*<MapView
                 style={styles.map}
                 initialRegion={{
                     latitude: 52.327660982470626,
@@ -38,7 +38,7 @@ const HomeScreen = ({ navigation }) => {
                         description={parcel.status}
                     />
                 ))}
-            </MapView>
+            </MapView>*/}
             <FlatList
                 data={parcels}
                 keyExtractor={(item) => item.id.toString()}
