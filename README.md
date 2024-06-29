@@ -1,5 +1,5 @@
 # Nodejs
 
 
-npm run start - запуск серверу expo
+**npm run start** або **expo start** - запуск серверу expo
 

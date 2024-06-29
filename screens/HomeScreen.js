@@ -1,36 +1,66 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, StyleSheet, TouchableOpacity, FlatList, Button} from 'react-native';
+import { getParcels } from '../api';
 import MapView, { Marker } from 'react-native-maps';
 
 const HomeScreen = ({ navigation }) => {
+    const [parcels, setParcels] = useState([]);
+
+    useEffect(() => {
+        fetchParcels();
+    }, []);
+
+    const fetchParcels = () => {
+        getParcels().then(response => {
+            setParcels(response);
+        });
+    };
+
     return (
         <View style={styles.container}>
             <MapView
                 style={styles.map}
                 initialRegion={{
-                    latitude: 48.8566,
-                    longitude: 2.3522,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421,
+                    latitude: 52.327660982470626,
+                    longitude: 21.110353390990518,
+                    latitudeDelta: 0.1,
+                    longitudeDelta: 0.1,
                 }}
             >
-                {/* Приклад маркерів */}
-                <Marker coordinate={{ latitude: 48.8566, longitude: 2.3522 }} title="Paris" />
-                {/* Додайте інші маркери тут */}
+                {parcels && parcels.map(parcel => (
+                    <Marker
+                        key={parcel.id}
+                        coordinate={{
+                            latitude: parseFloat(parcel.latitude),
+                            longitude: parseFloat(parcel.longitude),
+                        }}
+                        title={parcel.address}
+                        description={parcel.status}
+                    />
+                ))}
             </MapView>
-            <View style={styles.overlay}>
-                <Text style={styles.overlayText}>Laboin Lact</Text>
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.buttonText}>GO</Text>
-                </TouchableOpacity>
-                {/* Додайте інші елементи оверлею тут */}
-            </View>
+            <FlatList
+                data={parcels}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => (
+                    <View style={styles.item}>
+                        <Text>{item.address}</Text>
+                        <Text>{item.status}</Text>
+                    </View>
+                )}
+            />
+            <Button title="Оновити" onPress={fetchParcels} />
         </View>
     );
 };
 
 
 const styles = StyleSheet.create({
+    item: {
+        padding: 16,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc'
+    },
     container: {
         flex: 1,
     },
@@ -60,6 +90,13 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 16,
     },
+    colors: {
+        ColorTopMenu: '#FF7052',
+        backgroundColor: '#92A6A7',
+        ColorFields: '#F9FDE6',
+        ColorButtomMenu: '#D6DBC7',
+        ColorTitle: '#2D3C73',
+    }
 });
 
 export default HomeScreen;

@@ -3,7 +3,7 @@ const path = require('path');
 
 const sequelize = new Sequelize({
     dialect: 'sqlite',
-    storage: path.resolve(__dirname, 'courierApp.db')
+    storage: path.resolve(__dirname, 'courierApp.sqlite')
 });
 
 const db = {};

@@ -1,6 +1,7 @@
 const express = require('express');
 const parcelsRoutes = require('./routes/parcelsRoutes');
 const db = require('./data/db');
+const cors = require('cors');
 
 const app = express();
 const port = 4000;
@@ -12,6 +13,8 @@ db.sequelize.authenticate()
     .catch(err => {
         console.error('Unable to connect to the database:', err);
     });
+
+app.use(cors());
 
 app.use('/api/parcels/', parcelsRoutes);
 
