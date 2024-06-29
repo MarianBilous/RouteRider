@@ -90,13 +90,6 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 16,
     },
-    colors: {
-        ColorTopMenu: '#FF7052',
-        backgroundColor: '#92A6A7',
-        ColorFields: '#F9FDE6',
-        ColorButtomMenu: '#D6DBC7',
-        ColorTitle: '#2D3C73',
-    }
 });
 
 export default HomeScreen;

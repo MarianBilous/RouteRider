@@ -12,6 +12,7 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.Parcel = require('../models/parcel')(sequelize, DataTypes);
+db.Users = require('../models/users')(sequelize, DataTypes);
 
 sequelize.sync()
     .then(() => {
