@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: 'http://192.168.0.104:4000/api',
+    baseURL: 'http://192.168.0.120:4000/api',
     // baseURL: 'http://172.20.10.2:4000/api',
 });
 
@@ -15,13 +15,14 @@ export const getParcels = async () => {
     }
 };
 
-export const signIn = async (username, password) => {
+export const signIn = async (bar_code, password) => {
     try {
         const response = await api.post('/auth/signin', {
-            username,
+            bar_code,
             password
         });
 
+        console.log(response)
         return response.data;
     } catch (error) {
         console.error('Error signing in:', error);
@@ -36,6 +37,16 @@ export const signOut = async () => {
     } catch (error) {
         console.error('Error signing out:', error);
         throw error;
+    }
+};
+
+export const verifyToken = async () => {
+    try {
+        const response = await api.get('/auth/verifyToken');
+        return response.data.valid; // Очікуємо, що сервер поверне { valid: true } або { valid: false }
+    } catch (error) {
+        console.error('Помилка перевірки токену:', error);
+        return false; // Якщо виникла помилка, токен не валідний
     }
 };
 

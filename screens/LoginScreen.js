@@ -6,13 +6,13 @@ import {DefaultTheme} from "../themes/themes";
 
 const LoginScreen = ({ navigation }) => {
     const { login } = useAuth();
-    const [username, setUsername] = useState('');
+    const [bar_code, setBar_code] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const handleLogin = async () => {
+    const handleLogin = () => {
         try {
-            await login(username, password);
+            login(bar_code, password);
             // Після успішного входу перенаправити на головний екран або виконати інші дії
         } catch (error) {
             setError('Невірний логін або пароль.');
@@ -35,8 +35,8 @@ const LoginScreen = ({ navigation }) => {
             <View style={styles.inputContainer}>
                 <TextInput
                     placeholder="Ідентифікаційний новер"
-                    value={username}
-                    onChangeText={setUsername}
+                    value={bar_code}
+                    onChangeText={setBar_code}
                     style={styles.input}
                 />
                 {error ? <Text style={{ color: 'red' }}>{error}</Text> : null}

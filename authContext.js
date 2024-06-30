@@ -1,42 +1,56 @@
-import React, { createContext, useState, useContext } from 'react';
-import {signIn, signOut} from "./api";
+import React, {createContext, useState, useContext, useEffect} from 'react';
+import {signIn, signOut, verifyToken} from "./api";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    const login = async (username, password) => {
+    useEffect(() => {
+        const checkLoggedIn = async () => {
+            try {
+                const loggedIn = await verifyToken();
+                setIsLoggedIn(loggedIn);
+            } catch (error) {
+                console.error('Помилка перевірки стану авторизації:', error);
+            }
+        };
+
+        checkLoggedIn();
+    }, []);
+
+    const login = (username, password) => {
         try {
-            const response = await signIn(username, password);
-
-            // Зберігаємо токен у сеансі
-            // Це передбачає, що ваш сервер вже встановлює cookie або використовує інший механізм для зберігання сесій
-            // Якщо ви користуєтеся іншим методом зберігання токенів, то змініть цю логіку відповідно
-            req.session.token = response.data.token;
-
-            setIsLoggedIn(true);
+            signIn(username, password).then(response => {
+                if (response.id) {
+                    setIsLoggedIn(true);
+                } else {
+                    console.error('Немає відповідних даних для авторизації');
+                }
+            });
         } catch (error) {
             console.error('Помилка під час входу:', error);
             throw error;
         }
     };
 
-    const logout = async () => {
+    const logout = () => {
         try {
-            // Викликаємо API для виходу
-            await signOut();
-            // Очищаємо локальний стан і сесію
-            setIsLoggedIn(false);
-            req.session = null; // Переконайтеся, що сеанс дійсно очищено
+            signOut().then(r => {
+                setIsLoggedIn(false);
+            });
         } catch (error) {
             console.error('Помилка під час виходу:', error);
             throw error;
         }
     };
 
+    const checkIsLoggedIn = () => {
+        return isLoggedIn;
+    };
+
     return (
-        <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+        <AuthContext.Provider value={{ isLoggedIn, login, logout, checkIsLoggedIn }}>
             {children}
         </AuthContext.Provider>
     );
